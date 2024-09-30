@@ -6,7 +6,7 @@ from flask_session import Session
 
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import apology, login_required, lookup, usd
+from helpers import apology, login_required, usd
 
 # Configure application
 app = Flask(__name__)
@@ -98,14 +98,15 @@ def register():
             return apology("Passowrds did not match", 400)
 
         userName = request.form.get("username")
-
+        email = request.form.get("email")
         hashed_password = generate_password_hash(request.form.get("password"))
 
         if not userName or not request.form.get("password"):
             return apology("Must provide username and password", 400)
 
         try:
-            db.execute("INSERT INTO users (userName, hash) VALUES(?, ?)", userName, hashed_password)
+            db.execute("INSERT INTO users (userName, hash, email) VALUES(?, ?, ?)", userName, hashed_password, email)
+            print("ERROR")
             return redirect("/")
 
         except ValueError:
@@ -113,3 +114,10 @@ def register():
 
 
     return render_template("register.html")
+
+
+@app.route("/transactions", methods=["POST", "GET"])
+def income():
+    """Allow users to add their incomes, assets, etc. """
+
+    return render_template("transactions.html")
