@@ -10,7 +10,7 @@
         <h2>Add a Transaction</h2>
         <form action="/transactions" method="post">
             <div class="mb-3">
-                <select name="type" class="form-control w-auto">
+                <select name="type" class="form-control w-auto" id="transaction_type">
                     <option disabled selected>Transaction Type</option>
                     <option value="income">Income</option>
                     <option value="expense">Expense</option>
@@ -18,21 +18,11 @@
                 </select>
             </div>
 
-            <div class="mb-3">
-                <select name="category" class="form-control w-auto">
-                    <option disabled selected>Category</option>
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <input autocomplete="off" class="form-control w-auto" name="description" placeholder="Description (optional)" type="text">
-            </div>
-            
-            <div class="mb-3">
-                <input autocomplete="off" class="form-control w-auto" name="amount" placeholder="Amount" type="number">
-            </div>
-
-            <button class="btn btn-primary" type="submit">Submit</button>
+            <!-- this is where we insert the entries depending on what action we want incomes / expenses/ trasnfers -->
+             
+            <button class="btn btn-primary" type="submit" id="the_transaction_submit">Submit</button>
         </form>
     </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 {% endblock %}
