@@ -8,6 +8,9 @@
 
     <div class="container text-start">
         <h2>Add a Transaction</h2>
+        
+        <!-- If something goes wrong with user input, an alert message will appear here.-->
+
         <form action="/transactions" method="post">
             <div class="mb-3">
                 <select name="type" class="form-control w-auto" id="transaction_type">
@@ -25,4 +28,5 @@
     </div>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
+
 {% endblock %}

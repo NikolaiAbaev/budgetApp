@@ -23,6 +23,12 @@ Session(app)
 db = SQL("sqlite:///budget.db")
 
 
+# Global Variables for type of expenses and incomes
+CATEGORIES = {'expenses':['housing', 'utilities', 'transportation', 'groceries', 'dining_out', 'retirement', 'health', 'healthcare', 'debt_payments', 'entertainment','clothing',
+            'education', 'subscriptions', 'gifts', 'donations', 'other'], 
+            'incomes':['salary', 'freelance', 'investment', 'rental', 'business', 'bonuses', 'gifts', 'grants', 'pension', 'other']}
+
+
 @app.after_request
 def after_request(response):
     """Ensure responses aren't cached -- unsure if will keep this, but remove caching for now."""
@@ -35,7 +41,8 @@ def after_request(response):
 @app.route("/")
 @login_required
 def index():
-    return render_template("index.html")
+    name = session["username"]
+    return render_template("index.html", name=name)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -119,5 +126,22 @@ def register():
 @app.route("/transactions", methods=["POST", "GET"])
 def income():
     """Allow users to add their incomes, assets, etc. """
+    # Depending on the input type, income, expense, or transfer, we will have a slightly different variables. 
+    if request.method == "POST":
+        form_type = request.form.get("type")
+        if form_type == 'income' or form_type == 'expense':
+            category = request.form.get("category")
+            deposit_source = request.form.get("deposit_source")
+            date = request.form.get("date")
+            description = request.form.get("description")
+            amount = request.form.get("amount")
+            print(category, deposit_source, date, description, amount)
 
+        return render_template("transactions.html")
+
+    # to do: income 
+
+    #to do: expense
+
+    # to do: transfer
     return render_template("transactions.html")
