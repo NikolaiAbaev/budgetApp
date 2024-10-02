@@ -1,6 +1,7 @@
 const selectElement = document.getElementById("transaction_type")
 let insertedElement;
 
+
 selectElement.addEventListener("change", function () {
     const selectedOption = selectElement.value;
     let element = document.getElementById("the_transaction_submit")
@@ -17,8 +18,8 @@ selectElement.addEventListener("change", function () {
     if (selectedOption == 'income') {
         const newElement = `<div id="insertedFields">
                             <div class="mb-3">
-                                <select name="category" class="form-control w-auto">
-                                    <option disabled selected>Category</option>
+                                <select name="category" class="form-control w-auto" required>
+                                    <option value ="" disabled selected>Category</option>
                                     <option value="salary">Salary</option>
                                     <option value="freelance">Freelance</option>
                                     <option value="investment">Investment</option>
@@ -33,7 +34,7 @@ selectElement.addEventListener("change", function () {
                             </div>
                             
                             <div class="mb-3" id="deposit_location">
-                                <select name="deposit_source" class="form-control w-auto">
+                                <select name="source" class="form-control w-auto" required>
                                     <option disabled selected>Deposit Source</option>
                                     <option>Bank Account</option>
                                     <option>Cash</option>
@@ -41,7 +42,7 @@ selectElement.addEventListener("change", function () {
                             </div>
 
                             <div class="mb-3">
-                                <input autocomplete="off" class="form-control w-auto" name="date" type="date">
+                                <input autocomplete="off" class="form-control w-auto" name="date" type="date" required>
                             </div>
 
                             <div class="mb-3">
@@ -49,7 +50,7 @@ selectElement.addEventListener("change", function () {
                             </div>
                             
                             <div class="mb-3">
-                                <input autocomplete="off" class="form-control w-auto" name="amount" placeholder="Amount" type="number">
+                                <input autocomplete="off" class="form-control w-auto" name="amount" placeholder="Amount" required>
                             </div>
                             </div>`;
 
@@ -60,8 +61,8 @@ selectElement.addEventListener("change", function () {
     if (selectedOption == 'expense') {
         const newElement = `<div id="insertedFields">
                             <div class="mb-3">
-                                <select name="category" class="form-control w-auto">
-                                    <option disabled selected>Category</option>
+                                <select name="category" class="form-control w-auto" required>
+                                    <option value ="" disabled selected>Category</option>
                                     <option value="housing">Housing</option>
                                     <option value="utilities">Utilities</option>
                                     <option value="transportation">Transportation</option>
@@ -83,7 +84,7 @@ selectElement.addEventListener("change", function () {
                             </div>
                             
                             <div class="mb-3" id="withdrawal_source">
-                                <select name="deposit_source" class="form-control w-auto">
+                                <select name="source" class="form-control w-auto" required>
                                     <option disabled selected>Withdrawal Source</option>
                                     <option>Bank Account</option>
                                     <option>Credit Card</option>
@@ -92,7 +93,7 @@ selectElement.addEventListener("change", function () {
                             </div>
 
                             <div class="mb-3">
-                                <input autocomplete="off" class="form-control w-auto" name="date" type="date">
+                                <input autocomplete="off" class="form-control w-auto" name="date" type="date" required>
                             </div>
 
                             <div class="mb-3">
@@ -100,7 +101,7 @@ selectElement.addEventListener("change", function () {
                             </div>
 
                             <div class="mb-3">
-                                <input autocomplete="off" class="form-control w-auto" name="amount" placeholder="Amount" type="number">
+                                <input autocomplete="off" class="form-control w-auto" name="amount" placeholder="Amount" type="number" required>
                             </div>
                             </div>`;
 
@@ -110,21 +111,26 @@ selectElement.addEventListener("change", function () {
     }
     // TO DO -- create a feature where users can transfer from their cash accounts.
     if (selectedOption == 'transfer') {
-        const newElement = `<div id="insertedFields">
-                            <div class="mb-3">
-                                <select name="category" class="form-control w-auto">
-                                    <option disabled selected>Category</option>
-                                </select>
-                            </div>
-
-                            <div class="mb-3">
-                                <input autocomplete="off" class="form-control w-auto" name="description" placeholder="Description (optional)" type="text">
-                            </div>
-                            
-                            <div class="mb-3">
-                                <input autocomplete="off" class="form-control w-auto" name="amount" placeholder="Amount" type="number">
-                            </div>
-                            </div>`;
-
+        const newElement = ``
     }
+ })
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    
+    document.querySelector('form').addEventListener('submit', function (event) {
+        document.getElementById('alert_block').innerHTML = '';
+        // check to see if the submitted form is valid
+        console.log("form submitted")
+        if (!this.checkValidity()) {
+            event.preventDefault();
+            console.log("Form is invalid"); 
+
+            let alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-danger';
+            alertDiv.innerText = 'Please fill out all required fields correctly.';
+
+            document.getElementById('alert_block').appendChild(alertDiv);
+        } else { console.log("Form is valid"); }
+    })
 })

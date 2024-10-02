@@ -9,24 +9,31 @@
     <div class="container text-start">
         <h2>Add a Transaction</h2>
         
-        <!-- If something goes wrong with user input, an alert message will appear here.-->
 
-        <form action="/transactions" method="post">
+        
+        <div id="alert_block">
+
+            {% if error %}
+            <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
+
+        </div>
+
+        <form action="/transactions" method="post" novalidate>
             <div class="mb-3">
-                <select name="type" class="form-control w-auto" id="transaction_type">
-                    <option disabled selected>Transaction Type</option>
+                <select required name="type" class="form-control w-auto" id="transaction_type">
+                    <option value ="" disabled selected>Transaction Type</option>
                     <option value="income">Income</option>
                     <option value="expense">Expense</option>
                     <option value="transfer">Transfer</option> 
                 </select>
             </div>
-
+                
             <!-- this is where we insert the entries depending on what action we want incomes / expenses/ trasnfers -->
              
             <button class="btn btn-primary" type="submit" id="the_transaction_submit">Submit</button>
         </form>
     </div>
-
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 
 {% endblock %}

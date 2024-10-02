@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Add Transaction 
+{% endblock %}
+
+{% block main %}
+
+    <div class="container text-start">
+        
+        <!-- DISPLAY ALL ASSETS HERE -->
+
+        <h2>Add Asset / Debt</h2>
+        
+        <!-- If something goes wrong with user input, an alert message will appear here.-->
+
+        <div></div>
+
+        <form action="/addnetworth" method="post">
+            <div class="mb-3">
+                <select required name="type" class="form-control w-auto" id="asset_type">
+                    <option value ="" disabled selected>Asset Type</option>
+                    <option value ="" disabled selected>Bank Account</option>
+                    <option value ="" disabled selected>Cash</option>
+                    <option value ="" disabled selected>Real Estate</option>
+                    <option value ="" disabled selected>Retirement</option>
+                </select>
+            </div>
+                
+            <button class="btn btn-primary" type="submit" id="the_transaction_submit">Submit</button>
+        </form>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+{% endblock %}

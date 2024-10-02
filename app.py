@@ -1,4 +1,5 @@
 import os
+from datetime import datetime, date
 
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session
@@ -23,10 +24,10 @@ Session(app)
 db = SQL("sqlite:///budget.db")
 
 
-# Global Variables for type of expenses and incomes
-CATEGORIES = {'expenses':['housing', 'utilities', 'transportation', 'groceries', 'dining_out', 'retirement', 'health', 'healthcare', 'debt_payments', 'entertainment','clothing',
+# Global Variables for type of expenses and incomes. 
+CATEGORIES = {'expense':['housing', 'utilities', 'transportation', 'groceries', 'dining_out', 'retirement', 'health', 'healthcare', 'debt_payments', 'entertainment','clothing',
             'education', 'subscriptions', 'gifts', 'donations', 'other'], 
-            'incomes':['salary', 'freelance', 'investment', 'rental', 'business', 'bonuses', 'gifts', 'grants', 'pension', 'other']}
+            'income':['salary', 'freelance', 'investment', 'rental', 'business', 'bonuses', 'gifts', 'grants', 'pension', 'other']}
 
 
 @app.after_request
@@ -124,24 +125,52 @@ def register():
 
 
 @app.route("/transactions", methods=["POST", "GET"])
+@login_required
 def income():
-    """Allow users to add their incomes, assets, etc. """
+    """Allow users to add their incomes etc. """
     # Depending on the input type, income, expense, or transfer, we will have a slightly different variables. 
+
     if request.method == "POST":
         form_type = request.form.get("type")
+
         if form_type == 'income' or form_type == 'expense':
             category = request.form.get("category")
-            deposit_source = request.form.get("deposit_source")
-            date = request.form.get("date")
+            source = request.form.get("source")
+            transaction_date = request.form.get("date")
             description = request.form.get("description")
             amount = request.form.get("amount")
-            print(category, deposit_source, date, description, amount)
 
+            try: 
+                amount = int(amount)
+
+            except ValueError:
+                return render_template("transactions.html", error="Please enter a valid amount.")
+
+            if category not in CATEGORIES[form_type]:
+                return render_template("transactions.html", error="Please enter a valid category.")
+            
+            # check the date
+            today = date.today()
+            try:
+                input_date = datetime.strptime(transaction_date, "%Y-%m-%d").date()
+                if input_date > today:
+                    return render_template("transactions.html", error="Please enter a valid date.")
+            except ValueError:
+                return render_template("transactions.html", error="Please enter a date in a valid format.")
+            
+            # writing into the database
+            db.execute("INSERT INTO transactions (user_id, type, amount, description, category, transaction_date, source) VALUES (?, ?, ?, ?, ?, ?, ?)", 
+                    session["user_id"], form_type, amount, description, category, transaction_date, source)
+        
         return render_template("transactions.html")
 
-    # to do: income 
-
-    #to do: expense
-
     # to do: transfer
-    return render_template("transactions.html")
+
+    return render_template("transactions.html", expense=CATEGORIES["expense"], income=CATEGORIES["income"])
+
+
+@app.route("/addnetworth", methods=["POST", "GET"])
+@login_required
+def addnetworth():
+    """Show users their bank accounts, assets, and also allow users to add their assets / debts"""
+    render_template("addnetworth.html")
