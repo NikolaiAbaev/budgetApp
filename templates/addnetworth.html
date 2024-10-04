@@ -12,24 +12,40 @@
 
         <h2>Add Asset / Debt</h2>
         
-        <!-- If something goes wrong with user input, an alert message will appear here.-->
+        <div id="alert_block">
 
-        <div></div>
+            {% if error %}
+            <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
 
-        <form action="/addnetworth" method="post">
+        </div>
+
+        <form action="/addnetworth" method="post" novalidate>
             <div class="mb-3">
-                <select required name="type" class="form-control w-auto" id="asset_type">
-                    <option value ="" disabled selected>Asset Type</option>
-                    <option value ="bank_account"`>Bank Account</option>
-                    <option value ="cash" >Cash</option>
-                    <option value ="real_estate">Real Estate</option>
-                    <option value ="retirement">Retirement</option>
+                <select name="assetOrdebt" id="assetOrdebt" class="form-control w-auto" required>
+                    <option value="" selected disabled>Debt or Asset</option>
+                    <option value="asset">Asset</option>
+                    <option value="debt">Debt</option>
                 </select>
+            </div>
+
+            <div class="mb-3">
+                <select name="type" class="form-control w-auto" id="type">
+                    <option value ="" disabled selected>Type</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <input autocomplete="off" class="form-control w-auto" name="description" id = "description" type="text" placeholder="Description" required>
+            </div>
+
+            <div class="mb-3">
+                <input autocomplete="off" class="form-control w-auto" name="amount" id="amount" type="number" placeholder="Amount" required>
             </div>
                 
             <button class="btn btn-primary" type="submit" id="the_transaction_submit">Submit</button>
         </form>
     </div>
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='addnetworth_script.js') }}"></script>
 
 {% endblock %}

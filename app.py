@@ -24,10 +24,13 @@ Session(app)
 db = SQL("sqlite:///budget.db")
 
 
-# Global Variables for type of expenses and incomes. 
+# Global Variables for Validation. 
 CATEGORIES = {'expense':['housing', 'utilities', 'transportation', 'groceries', 'dining_out', 'retirement', 'health', 'healthcare', 'debt_payments', 'entertainment','clothing',
             'education', 'subscriptions', 'gifts', 'donations', 'other'], 
-            'income':['salary', 'freelance', 'investment', 'rental', 'business', 'bonuses', 'gifts', 'grants', 'pension', 'other']}
+            'income':['salary', 'freelance', 'investment', 'rental', 'business', 'bonuses', 'gifts', 'grants', 'pension', 'other'],}
+
+ASSETS_DEBTS = {'asset': ['cash', 'checking', 'saving', 'retirement', 'real_estate', 'vehicle', 'personal_property', 'other'],
+                'debt': ['mortgage', 'loan', 'credit', 'medical', 'other'],}
 
 
 @app.after_request
@@ -176,11 +179,40 @@ def income():
 def addnetworth():
     """Show users their bank accounts, assets, and also allow users to add their assets / debts"""
     if request.method == "POST":
-        # add stuff in DB
+        input = request.form.get('assetOrdebt')
+        input_type = request.form.get('type')
+        input_amount = request.form.get('amount')
+        input_descritpion = request.form.get('description')
+
+        #server side input validation 
+        if input != 'debt' and input != 'asset':
+            return render_template("addnetworth.html", error="Please enter either Debt or Asset.")
+        
+        if input_type not in ASSETS_DEBTS[input]:
+             return render_template("addnetworth.html", error=f"Please enter a valid {input} type.")
+        
+        try:
+            input_amount = int(input_amount)
+            if input_amount < 0:
+                return render_template("addnetworth.html", error="Please enter a positive number.")
+        except ValueError:
+            return render_template("addnetworth.html", error="Please enter a valid positive number.")
+        
+        if input_descritpion == '' or input_descritpion == None:
+            return render_template("addnetworth.html", error=f"Please enter a description of the {input}.") 
+        
+        if input == 'asset':
+            db.execute("INSERT INTO assets (user_id, asset_name, asset_type, value) VALUES (?, ?, ?, ?)", session["user_id"], input_descritpion, input_type, input_amount)
+
+        # need to add interest rate + due dates for debt. 
+        elif input == 'debt':
+            db.execute("INSERT INTO debts (user_id, creditor_name, debt_type, value) VALUES (?, ?, ?, ?)", session["user_id"], input_descritpion, input_type, input_amount)
+
         return render_template("addnetworth.html")
     
     # look into DB and render it on the page. 
     return render_template("addnetworth.html")
+
 
 # TO DO: Add a route to generate net worth stats
 

@@ -50,7 +50,7 @@ selectElement.addEventListener("change", function () {
                             </div>
                             
                             <div class="mb-3">
-                                <input autocomplete="off" class="form-control w-auto" name="amount" placeholder="Amount" type="number" required>
+                                <input autocomplete="off" class="form-control w-auto" name="amount" placeholder="Amount" type="number" min="0.01" required>
                             </div>
                             </div>`;
 
@@ -101,7 +101,7 @@ selectElement.addEventListener("change", function () {
                             </div>
 
                             <div class="mb-3">
-                                <input autocomplete="off" class="form-control w-auto" name="amount" placeholder="Amount" type="number" required>
+                                <input autocomplete="off" class="form-control w-auto" name="amount" placeholder="Amount" type="number" min="0.01" required>
                             </div>
                             </div>`;
 
