@@ -50,7 +50,7 @@ selectElement.addEventListener("change", function () {
                             </div>
                             
                             <div class="mb-3">
-                                <input autocomplete="off" class="form-control w-auto" name="amount" placeholder="Amount" required>
+                                <input autocomplete="off" class="form-control w-auto" name="amount" placeholder="Amount" type="number" required>
                             </div>
                             </div>`;
 
@@ -109,7 +109,7 @@ selectElement.addEventListener("change", function () {
             insertedElement = document.getElementById('insertedFields');
 
     }
-    // TO DO -- create a feature where users can transfer from their cash accounts.
+    // TO DO -- create a feature where users can transfer from their accounts.
     if (selectedOption == 'transfer') {
         const newElement = ``
     }
@@ -121,16 +121,14 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('form').addEventListener('submit', function (event) {
         document.getElementById('alert_block').innerHTML = '';
         // check to see if the submitted form is valid
-        console.log("form submitted")
         if (!this.checkValidity()) {
             event.preventDefault();
-            console.log("Form is invalid"); 
 
             let alertDiv = document.createElement('div');
             alertDiv.className = 'alert alert-danger';
             alertDiv.innerText = 'Please fill out all required fields correctly.';
-
             document.getElementById('alert_block').appendChild(alertDiv);
-        } else { console.log("Form is valid"); }
+        // check the date, amount, category, transaction type, source. 
+        }
     })
 })

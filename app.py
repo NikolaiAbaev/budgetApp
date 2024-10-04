@@ -149,7 +149,7 @@ def income():
             if category not in CATEGORIES[form_type]:
                 return render_template("transactions.html", error="Please enter a valid category.")
             
-            # check the date
+            # check the date (also add other checks here, i.e., entering dates that are too long time ago)
             today = date.today()
             try:
                 input_date = datetime.strptime(transaction_date, "%Y-%m-%d").date()
@@ -161,7 +161,9 @@ def income():
             # writing into the database
             db.execute("INSERT INTO transactions (user_id, type, amount, description, category, transaction_date, source) VALUES (?, ?, ?, ?, ?, ?, ?)", 
                     session["user_id"], form_type, amount, description, category, transaction_date, source)
-        
+
+            # to do: addition to the transaction DB should affect debt and assets DBs. 
+
         return render_template("transactions.html")
 
     # to do: transfer
@@ -173,4 +175,15 @@ def income():
 @login_required
 def addnetworth():
     """Show users their bank accounts, assets, and also allow users to add their assets / debts"""
-    render_template("addnetworth.html")
+    if request.method == "POST":
+        # add stuff in DB
+        return render_template("addnetworth.html")
+    
+    # look into DB and render it on the page. 
+    return render_template("addnetworth.html")
+
+# TO DO: Add a route to generate net worth stats
+
+# TO DO: Add a route to generate monthly / yearly spending 
+
+# TO DO: Add a route to view projections / monthly budgeting / future planning
