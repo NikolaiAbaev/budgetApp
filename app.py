@@ -7,7 +7,7 @@ from flask_session import Session
 
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import apology, login_required, usd
+from helpers import apology, login_required, usd, interest
 
 # Configure application
 app = Flask(__name__)
@@ -35,7 +35,7 @@ ASSETS_DEBTS = {'asset': ['cash', 'checking', 'saving', 'retirement', 'real_esta
 
 @app.after_request
 def after_request(response):
-    """Ensure responses aren't cached -- unsure if will keep this, but remove caching for now."""
+    """Ensure responses aren't cached -- unsure if will keep this, but removing caching for now."""
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
     response.headers["Expires"] = 0
     response.headers["Pragma"] = "no-cache"
@@ -46,7 +46,24 @@ def after_request(response):
 @login_required
 def index():
     name = session["username"]
-    return render_template("index.html", name=name)
+    assets = db.execute("SELECT * FROM assets WHERE user_id = ?", session["user_id"]) 
+    debts = db.execute("SELECT * FROM debts WHERE user_id = ?", session["user_id"])
+    total_debt = 0
+    total_asset = 0
+
+    for i in range(0, len(assets)):
+        total_asset += int(assets[i]['value'])
+        assets[i]['value'] = usd(assets[i]['value'])
+
+    for i in range(0, len(debts)):
+        total_debt += int(debts[i]['amount'])
+        debts[i]['amount'] = usd(debts[i]['amount'])
+        debts[i]['interest_rate'] = interest(debts[i]['interest_rate'])
+
+    total_debt = usd(total_debt)
+    total_asset = usd(total_asset)
+
+    return render_template("index.html", name=name, assets=assets, debts=debts, total_debt=total_debt, total_asset=total_asset)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -80,7 +97,6 @@ def login():
         # Remember which user has logged in
         session["user_id"] = rows[0]["id"]
         session["username"] = rows[0]["username"]
-        print(rows)
 
         # Redirect user to home page
         return redirect("/")
@@ -125,6 +141,13 @@ def register():
 
 
     return render_template("register.html")
+
+
+@app.route("/reports", methods=["GET"])
+@login_required
+def reports():
+    """Render Monthly and Yearly statistics here"""
+    return render_template("reports.html")
 
 
 @app.route("/transactions", methods=["POST", "GET"])
@@ -206,16 +229,22 @@ def addnetworth():
 
         # need to add interest rate + due dates for debt. 
         elif input == 'debt':
-            db.execute("INSERT INTO debts (user_id, creditor_name, debt_type, value) VALUES (?, ?, ?, ?)", session["user_id"], input_descritpion, input_type, input_amount)
+            interest_rate = request.form.get("interest_rate")
+            due_date = request.form.get("due_date") # for now this just grabs it but does not do anything with it. 
+            db.execute("INSERT INTO debts (user_id, creditor_name, debt_type, amount, interest_rate) VALUES (?, ?, ?, ?, ?)", 
+                               session["user_id"], input_descritpion, input_type, input_amount, interest_rate)
 
-        return render_template("addnetworth.html")
-    
-    # look into DB and render it on the page. 
-    return render_template("addnetworth.html")
+            return render_template("addnetworth.html")
+        
+    if request.method == 'GET':
+        
+        # TO DO: pass the submitted value to preselct the form. 
 
+        form_request = request.args.get("submit") 
+        return render_template("addnetworth.html", form_request=form_request)
+
+# TO DO: user account edit page
 
 # TO DO: Add a route to generate net worth stats
 
 # TO DO: Add a route to generate monthly / yearly spending 
-
-# TO DO: Add a route to view projections / monthly budgeting / future planning

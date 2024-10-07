@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Reports
+{% endblock %}
+
+{% block main %}
+
+    <div class="container text-start">
+        <h2>Your Reports Here</h2>
+        
+        <form action="/transactions" method="get">            
+            <button class="btn btn-primary" type="submit" id="the_transaction_submit">Add Transactions</button>
+        </form>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+{% endblock %}

@@ -48,3 +48,8 @@ def login_required(f):
 def usd(value):
     """Format value as USD."""
     return f"${value:,.2f}"
+
+
+def interest(value):
+    """Format value as percentage with two decimals behind."""
+    return f"{value:.2f}%"
