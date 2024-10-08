@@ -167,7 +167,7 @@ def income():
             amount = request.form.get("amount")
 
             try: 
-                amount = int(amount)
+                amount = float(amount)
 
             except ValueError:
                 return render_template("transactions.html", error="Please enter a valid amount.")
@@ -215,7 +215,7 @@ def addnetworth():
              return render_template("addnetworth.html", error=f"Please enter a valid {input} type.")
         
         try:
-            input_amount = int(input_amount)
+            input_amount = float(input_amount)
             if input_amount < 0:
                 return render_template("addnetworth.html", error="Please enter a positive number.")
         except ValueError:
@@ -226,10 +226,14 @@ def addnetworth():
         
         if input == 'asset':
             db.execute("INSERT INTO assets (user_id, asset_name, asset_type, value) VALUES (?, ?, ?, ?)", session["user_id"], input_descritpion, input_type, input_amount)
-
-        # need to add interest rate + due dates for debt. 
+ 
         elif input == 'debt':
             interest_rate = request.form.get("interest_rate")
+            try:
+                input_rate = float(interest_rate)
+            except ValueError:
+                return render_template("addnetworth.html", error="Please enter a valid number for interest")
+            
             due_date = request.form.get("due_date") # for now this just grabs it but does not do anything with it. 
             db.execute("INSERT INTO debts (user_id, creditor_name, debt_type, amount, interest_rate) VALUES (?, ?, ?, ?, ?)", 
                                session["user_id"], input_descritpion, input_type, input_amount, interest_rate)
@@ -240,11 +244,11 @@ def addnetworth():
         
         # TO DO: pass the submitted value to preselct the form. 
 
-        form_request = request.args.get("submit") 
+        form_request = request.args.get("submit")
         return render_template("addnetworth.html", form_request=form_request)
 
 # TO DO: user account edit page
 
-# TO DO: Add a route to generate net worth stats
-
 # TO DO: Add a route to generate monthly / yearly spending 
+
+# TO DO: Add a route to create a budget 

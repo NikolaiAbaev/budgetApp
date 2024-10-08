@@ -50,7 +50,7 @@ selectElement.addEventListener("change", function () {
                             </div>
                             
                             <div class="mb-3">
-                                <input autocomplete="off" class="form-control w-auto" name="amount" placeholder="Amount" type="number" min="0.01" required>
+                                <input autocomplete="off" class="form-control w-auto" name="amount" placeholder="Amount" type="float" id="amount" required>
                             </div>
                             </div>`;
 
@@ -101,7 +101,7 @@ selectElement.addEventListener("change", function () {
                             </div>
 
                             <div class="mb-3">
-                                <input autocomplete="off" class="form-control w-auto" name="amount" placeholder="Amount" type="number" min="0.01" required>
+                                <input autocomplete="off" class="form-control w-auto" name="amount" placeholder="Amount" type="float" id="amount" required>
                             </div>
                             </div>`;
 
@@ -120,15 +120,25 @@ document.addEventListener('DOMContentLoaded', function() {
     
     document.querySelector('form').addEventListener('submit', function (event) {
         document.getElementById('alert_block').innerHTML = '';
-        // check to see if the submitted form is valid
+        const inputAmount = document.getElementById("amount").value;
+        let int_amount = parseFloat(inputAmount);
+
         if (!this.checkValidity()) {
             event.preventDefault();
-
             let alertDiv = document.createElement('div');
             alertDiv.className = 'alert alert-danger';
             alertDiv.innerText = 'Please fill out all required fields correctly.';
             document.getElementById('alert_block').appendChild(alertDiv);
+
         // check the date, amount, category, transaction type, source. 
         }
+        else if (int_amount <= 0) {
+            let alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-danger';
+            event.preventDefault();
+            alertDiv.innerText = 'Please entere a positive amount.';
+            document.getElementById('alert_block').appendChild(alertDiv);
+        }
+        
     })
 })

@@ -23,7 +23,7 @@ listenElement.addEventListener("change", function() {
         const newElement = `
                     <div id="insertedFields">
                         <div class="mb-3">
-                            <input autocomplete=off class="form-control w-auto" name="interest_rate" id="interest_rate" placeholder="Interest Rate" required>
+                            <input autocomplete=off class="form-control w-auto" name="interest_rate" id="interest_rate" placeholder="Interest Rate" type="float" required>
                         </div>
             
                         <div class="mb-3">
@@ -57,8 +57,8 @@ listenElement.addEventListener("change", function() {
       document.querySelector('form').addEventListener('submit', function (event) {
         const inputAmount = document.getElementById("amount").value;
         const interest_rate = document.getElementById("interest_rate").value;
-        let int_num = parseInt(interest_rate);
-        let num = parseInt(inputAmount);
+        let int_num = parseFloat(interest_rate);
+        let num = parseFloat(inputAmount);
         
         document.getElementById('alert_block').innerHTML = '';
         let alertDiv = document.createElement('div');
