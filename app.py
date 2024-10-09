@@ -7,7 +7,7 @@ from flask_session import Session
 
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import apology, login_required, usd, interest
+from helpers import apology, login_required, usd, interest, date_format
 
 # Configure application
 app = Flask(__name__)
@@ -143,11 +143,25 @@ def register():
     return render_template("register.html")
 
 
-@app.route("/reports", methods=["GET"])
+@app.route("/reports", methods=["GET", "POST"])
 @login_required
 def reports():
+    """Allow User to Edit and Delete Entries on the Generated Table"""
+    if request.method == "POST":
+        #handle the updates, edits, and deletions
+            # DELETION
+            # UPDATE
+            
+        return redirect("reports.html")
+    
     """Render Monthly and Yearly statistics here"""
-    return render_template("reports.html")
+    user_data = db.execute("SELECT id, type, amount, description, category, transaction_date, source FROM transactions WHERE user_id = ?", session["user_id"])
+    user_data.sort(key=lambda x: x['transaction_date'])
+    for i in user_data:
+        i['amount'] = usd(i['amount'])
+        i['transaction_date'] = date_format(i['transaction_date'])
+
+    return render_template("reports.html", user_data=user_data)
 
 
 @app.route("/transactions", methods=["POST", "GET"])
@@ -188,11 +202,11 @@ def income():
             db.execute("INSERT INTO transactions (user_id, type, amount, description, category, transaction_date, source) VALUES (?, ?, ?, ?, ?, ?, ?)", 
                     session["user_id"], form_type, amount, description, category, transaction_date, source)
 
-            # to do: addition to the transaction DB should affect debt and assets DBs. 
+            # TO DO: addition to the transaction DB should affect debt and assets DBs. 
 
         return render_template("transactions.html")
 
-    # to do: transfer
+    # TO DO: transfer
 
     return render_template("transactions.html", expense=CATEGORIES["expense"], income=CATEGORIES["income"])
 
@@ -247,8 +261,14 @@ def addnetworth():
         form_request = request.args.get("submit")
         return render_template("addnetworth.html", form_request=form_request)
 
+
 # TO DO: user account edit page
+
 
 # TO DO: Add a route to generate monthly / yearly spending 
 
+
 # TO DO: Add a route to create a budget 
+
+
+# TO DO: nest the net worth by asset / debt type. 

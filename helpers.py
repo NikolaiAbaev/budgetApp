@@ -53,3 +53,11 @@ def usd(value):
 def interest(value):
     """Format value as percentage with two decimals behind."""
     return f"{value:.2f}%"
+
+
+def date_format(str):
+    """Format the str into a a date in the following format: "Month, Date, Year." """
+    MONTHS = {
+    1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June", 7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December"}
+    split = str.split("-")
+    return f"{MONTHS[int(split[1])]} {int(split[2])}, {split[0]}"
