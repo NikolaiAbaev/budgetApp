@@ -25,10 +25,5 @@ selectedElelement.addEventListener("click", function(event) {
         `
 
         console.log(currentDate, currentDescription, currentAmount)
-
-
-
     }
-
-    
 })
