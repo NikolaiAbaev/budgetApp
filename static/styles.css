@@ -17,9 +17,9 @@ nav .navbar-brand .yellow
 {
     color: #f5b82e;
 }
-nav .navbar-brand .green
-{
+nav .navbar-brand .green {
     color: #2e944b;
+}
 
 
 .table {
@@ -48,4 +48,9 @@ nav .navbar-brand .green
 .form-container {
     margin-top: 20px;
     text-align: center;
+}
+
+button.delete-btn img.trash_img {
+    width: 20px !important; 
+    height: 20px !important;
 }
