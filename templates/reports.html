@@ -9,7 +9,7 @@
     <div class="container text-start">
         <h2>Spending Overview</h2>
         
-        <table class="table table-hover table-striped">
+        <table class="table table-hover table-striped" id="transactions_table">
             <thead>
                 <tr class="list-heading">
                     <th scope="row">Date</th>
@@ -20,14 +20,15 @@
             </thead>
                 {% for data in user_data %}
                 <tr id="row-{{ data.id }}">
-                    <td id="date-{{ data.id }}">{{ data.transaction_date }}</td>
-                    <td id="description-{{ data.id }}">{{ data.description }}</td>
-                    <td id="amount-{{ data.id }}">{{ data.amount }}</td>
-                    <td>
-                        <button class="btn btn-primary" type="submit" id="edit-{{data.id}}">Edit</button>
-                        <button class="btn btn-primary" type="submit" id="delete-{{data.id}}">Del</button>
+                    <td class="row-date">{{ data.transaction_date }}</td>
+                    <td class="row-description">{{ data.description }}</td>
+                    <td class="row-amount">{{ data.amount }}</td>
+                    <td class="row-buttons">       
+                        <button class="btn btn-primary delete-btn" type="submit" id="edit-{{data.id}}">Edit</button>
+                        <button class="btn btn-primary delete-btn" type="submit" id="delete-{{data.id}}">Del</button>
                     </td>
                 </tr>
+
                 {% endfor %}
             <tbody> 
             
