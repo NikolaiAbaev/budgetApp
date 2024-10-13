@@ -9,7 +9,11 @@
     <div class="container text-start">
         <h2>Spending Overview</h2>
 
-        <div id="alert_block"></div>
+        <div id="alert_block">
+            {% if error %}
+            <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
+        </div>
 
         <table class="table table-hover table-striped" id="transactions_table">
             <thead>
