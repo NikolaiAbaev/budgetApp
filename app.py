@@ -146,14 +146,7 @@ def register():
 @app.route("/reports", methods=["GET", "POST"])
 @login_required
 def reports():
-    """Allow User to Edit and Delete Entries on the Generated Table"""
-    if request.method == "POST":
-        #handle the updates, edits, and deletions
-            # DELETION
-            # UPDATE
-            
-        return redirect("reports.html")
-    
+
     """Render Monthly and Yearly statistics here"""
     user_data = db.execute("SELECT id, type, amount, description, category, transaction_date, source FROM transactions WHERE user_id = ?", session["user_id"])
     user_data.sort(key=lambda x: x['transaction_date'])
@@ -161,6 +154,37 @@ def reports():
         i['amount'] = usd(i['amount'])
         i['transaction_date'] = date_format(i['transaction_date'])
 
+    """Allow User to Edit and Delete Entries on the Generated Table"""
+    if request.method == "POST":
+        user_submit = request.form.get('id')
+        enter_date = request.form.get('date')
+        enter_description = request.form.get('description')
+        enter_amount = request.form.get('amount')
+
+        if enter_date == None and enter_description == None and enter_amount == None:
+            db.execute("DELETE FROM transactions WHERE id = ?", user_submit)
+        else:
+            try: 
+                enter_amount = float(enter_amount)
+                if enter_amount < 0.01:
+                    return render_template("reports.html", error="Please enter a valid amount.", user_data=user_data)
+            except ValueError:
+                return render_template("reports.html", error="Please enter a valid amount.", user_data=user_data)
+            
+            today = date.today()
+            try:
+                enter_date = datetime.strptime(enter_date, "%Y-%m-%d").date()
+                if enter_date > today:
+                    return render_template("reprots.html", error="Please enter a valid date.", user_data=user_data)
+            except ValueError:
+                return render_template("reports.html", error="Please enter a date in a valid format.", user_data=user_data)
+            
+            db.execute("UPDATE transactions SET description = ?, amount = ?, transaction_date = ? WHERE id=?", enter_description, enter_amount, enter_date, user_submit) 
+            print("we are here")
+            
+        return redirect("reports")
+    
+    """Render Monthly and Yearly statistics here"""
     return render_template("reports.html", user_data=user_data)
 
 
@@ -200,13 +224,9 @@ def income():
             
             # writing into the database
             db.execute("INSERT INTO transactions (user_id, type, amount, description, category, transaction_date, source) VALUES (?, ?, ?, ?, ?, ?, ?)", 
-                    session["user_id"], form_type, amount, description, category, transaction_date, source)
-
-            # TO DO: addition to the transaction DB should affect debt and assets DBs. 
+                    session["user_id"], form_type, amount, description, category, transaction_date, source) 
 
         return render_template("transactions.html")
-
-    # TO DO: transfer
 
     return render_template("transactions.html", expense=CATEGORIES["expense"], income=CATEGORIES["income"])
 

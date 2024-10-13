@@ -8,7 +8,13 @@
 
     <div class="container text-start">
         <h2>Spending Overview</h2>
-        
+
+        <div id="alert_block">
+            {% if error %}
+            <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
+        </div>
+
         <table class="table table-hover table-striped" id="transactions_table">
             <thead>
                 <tr class="list-heading">
@@ -24,8 +30,8 @@
                     <td class="row-description">{{ data.description }}</td>
                     <td class="row-amount">{{ data.amount }}</td>
                     <td class="row-buttons">       
-                        <button class="btn btn-primary delete-btn" type="submit" id="edit-{{data.id}}">Edit</button>
-                        <button class="btn btn-primary delete-btn" type="submit" id="delete-{{data.id}}">Del</button>
+                        <button class="btn btn-primary edit-btn" type="submit" value="{{ data.id }}" id="edit-{{data.id}}">Edit</button>
+                        <button class="btn btn-primary delete-btn" type="submit" value="{{ data.id }}" id="delete-{{data.id}}">Delete</button>
                     </td>
                 </tr>
 

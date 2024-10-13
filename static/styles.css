@@ -19,7 +19,11 @@ nav .navbar-brand .yellow
 }
 nav .navbar-brand .green {
 nav .navbar-brand .green {
+nav .navbar-brand .green {
+nav .navbar-brand .green {
     color: #2e944b;
+}
+}
 }
 }
 
@@ -61,4 +65,9 @@ button.delete-btn img.trash_img {
 button.delete-btn img.trash_img {
     width: 20px !important; 
     height: 20px !important;
+}
+
+
+form.edit-delete {
+    display: inline;
 }
