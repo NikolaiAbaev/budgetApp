@@ -148,11 +148,14 @@ def register():
 def reports():
     """Allow User to Edit and Delete Entries on the Generated Table"""
     if request.method == "POST":
-        #handle the updates, edits, and deletions
-            # DELETION
-            # UPDATE
+        user_submit = request.form.get('id')
+        enter_date = request.form.get('date')
+        enter_description = request.form.get('description')
+        enter_amount = request.form.get('amount')
+        
+        print(user_submit, enter_date, enter_description, enter_amount)
             
-        return redirect("reports.html")
+        return redirect("reports")
     
     """Render Monthly and Yearly statistics here"""
     user_data = db.execute("SELECT id, type, amount, description, category, transaction_date, source FROM transactions WHERE user_id = ?", session["user_id"])
