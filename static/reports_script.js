@@ -1,4 +1,4 @@
-const selectedElelement = document.getElementById("transactions_table")
+const selectedElelement = document.getElementById("transactions_table");
 let clickTracker = false;
 
 let MONTHS = {
@@ -35,9 +35,9 @@ selectedElelement.addEventListener("click", function(event) {
 
         if (event.target.textContent == 'Edit') {
 
-            date_row.innerHTML = `<input id="dateValue" type="date" id="date_update" placeholder="${currentDate}" value="${currentDate}">`
-            description_row.innerHTML = `<input id="descriptionValue" type="text" id="description_update" placeholder="${currentDescription}" value="${currentDescription}">`
-            amount_row.innerHTML = `<input id="amountValue" type="number" id="amount_update" placeholder="${currentAmount}" value="${currentAmount}">`
+            date_row.innerHTML = `<input id="dateValue" type="date" placeholder="${currentDate}" value="${currentDate}">`
+            description_row.innerHTML = `<input id="descriptionValue" type="text" placeholder="${currentDescription}" value="${currentDescription}">`
+            amount_row.innerHTML = `<input id="amountValue" type="number" placeholder="${currentAmount}" value="${currentAmount}">`
 
             let enter_date = document.querySelector("#dateValue").value;
             let enter_description = document.querySelector("#descriptionValue").value;
@@ -58,7 +58,6 @@ selectedElelement.addEventListener("click", function(event) {
                     <form>`
 
                     document.querySelector('#confirmation').addEventListener('click', function() {
-                        console.log('confirm click')
                         document.querySelector('#date_input').value = document.querySelector("#dateValue").value;
                         document.querySelector('#description_input').value = document.querySelector("#descriptionValue").value;
                         document.querySelector('#amount_input').value = document.querySelector("#amountValue").value;
@@ -77,33 +76,35 @@ selectedElelement.addEventListener("click", function(event) {
                         <input name="id" type="hidden" value="${event.target.value}">
                         <button class="btn btn-primary" type="submit">Delete</button>
                     <form>`}
-        }
-        }
+        }})
 
-        document.addEventListener('DOMContentLoaded', function() {
-    
-            document.querySelector('form').addEventListener('submit', function (event) {
-                document.getElementById('alert_block').innerHTML = '';
-                const inputAmount = document.getElementById("amount").value;
-                let int_amount = parseFloat(inputAmount);
         
-                if (!this.checkValidity()) {
-                    event.preventDefault();
-                    let alertDiv = document.createElement('div');
-                    alertDiv.className = 'alert alert-danger';
-                    alertDiv.innerText = 'Please fill out all required fields correctly.';
-                    document.getElementById('alert_block').appendChild(alertDiv);
+
+
+// need to fix this. 
+document.addEventListener('DOMContentLoaded', function() {
+
+    document.querySelector('form').addEventListener('submit', function (event) {
+        document.getElementById('alert_block').innerHTML = '';
+        const inputAmount = document.getElementById("amount").value;
+        let int_amount = parseFloat(inputAmount);
+        console.log(int_amount);
+        if (!this.checkValidity()) {
+            event.preventDefault();
+            let alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-danger';
+            alertDiv.innerText = 'Please fill out all required fields correctly.';
+            document.getElementById('alert_block').appendChild(alertDiv);
+
+        // check the date, amount, category, transaction type, source. 
+        }
+        else if (int_amount <= 0) {
+            let alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-danger';
+            event.preventDefault();
+            alertDiv.innerText = 'Please entere a positive amount.';
+            document.getElementById('alert_block').appendChild(alertDiv);
+        }
         
-                // check the date, amount, category, transaction type, source. 
-                }
-                else if (int_amount <= 0) {
-                    let alertDiv = document.createElement('div');
-                    alertDiv.className = 'alert alert-danger';
-                    event.preventDefault();
-                    alertDiv.innerText = 'Please entere a positive amount.';
-                    document.getElementById('alert_block').appendChild(alertDiv);
-                }
-                
-            })
-        })
-)
+    })
+})
