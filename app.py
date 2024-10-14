@@ -148,11 +148,22 @@ def register():
 def reports():
 
     """Render Monthly and Yearly statistics here"""
-    user_data = db.execute("SELECT id, type, amount, description, category, transaction_date, source FROM transactions WHERE user_id = ?", session["user_id"])
-    user_data.sort(key=lambda x: x['transaction_date'])
-    for i in user_data:
-        i['amount'] = usd(i['amount'])
-        i['transaction_date'] = date_format(i['transaction_date'])
+    if request.args.get('startMonth') and request.args.get('endMonth'):
+        start_month = request.args.get('startMonth') + "-01"
+        end_month = request.args.get('endMonth') + "-31"
+        user_data = db.execute("SELECT id, type, amount, description, category, transaction_date, source FROM transactions WHERE user_id = ? AND transaction_date\
+                                BETWEEN ? AND ?", session["user_id"], start_month, end_month)
+        user_data.sort(key=lambda x: x['transaction_date'])
+        for i in user_data:
+            i['amount'] = usd(i['amount'])
+            i['transaction_date'] = date_format(i['transaction_date'])
+
+    else:
+        user_data = db.execute("SELECT id, type, amount, description, category, transaction_date, source FROM transactions WHERE user_id = ?", session["user_id"])
+        user_data.sort(key=lambda x: x['transaction_date'])
+        for i in user_data:
+            i['amount'] = usd(i['amount'])
+            i['transaction_date'] = date_format(i['transaction_date'])
 
     """Allow User to Edit and Delete Entries on the Generated Table"""
     if request.method == "POST":
@@ -161,6 +172,7 @@ def reports():
         enter_description = request.form.get('description')
         enter_amount = request.form.get('amount')
 
+        # only id was entered, it will delete the entry.  There may be some issues with this design (if accidently we only submit an id w/o other variables in post) 
         if enter_date == None and enter_description == None and enter_amount == None:
             db.execute("DELETE FROM transactions WHERE id = ?", user_submit)
         else:

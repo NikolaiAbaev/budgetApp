@@ -15,16 +15,21 @@
             {% endif %}
         </div>
 
-        <form action="" method="post">
+        <form action="reports" method="get">
             <div class="mb-3">
                 <select class="form-control w-auto" name="report_type" id="report_type">
                     <option value="" disabled selected >Select Range</option>
                     <option value="all">All</option>
+                    <option value="month">Month</option>
                     <option value="range">Range</option>
                 </select>   
             </div>
+
             <div class="mb-3">
-                <input type="month" min="2018-01" class="form-control w-auto" placeholder="2024-10">
+                <label for="startMonth">From:</label>
+                <input type="month" name="startMonth" id="startMonth" min="2018-01" class="form-control w-auto">
+                <label for="endMonth">To:</label>
+                <input type="month" name="endMonth" id="endMonth" min="2018-01" class="form-control w-auto">
             </div>
             <div class="mb-3">
                 <button class="btn btn-primary" type="submit">Apply</button>
