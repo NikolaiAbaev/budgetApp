@@ -1,4 +1,6 @@
 const selectedElelement = document.getElementById("transactions_table");
+const rangeSelectedElement = document.getElementById("report_type")
+
 let clickTracker = false;
 
 let MONTHS = {
@@ -77,5 +79,28 @@ selectedElelement.addEventListener("click", function(event) {
                         <button class="btn btn-primary" type="submit">Delete</button>
                     <form>`}
         }})
+
+
+rangeSelectedElement.addEventListener('click', function(event) {
+    let userChoice = event.target.value;
+    let updatedElement = document.querySelector("#range_options");
+    if (userChoice == 'range') {
+        updatedElement.innerHTML = `
+                                    <label for="startMonth">From:</label>
+                                    <input type="month" name="startMonth" id="startMonth" min="2018-01" class="form-control w-auto">
+                                    <label for="endMonth">To:</label>
+                                    <input type="month" name="endMonth" id="endMonth" min="2018-01" class="form-control w-auto"></input>`;
+    }
+
+    if (userChoice == 'month') {
+        updatedElement.innerHTML = `
+                                    <label for="startMonth">Select a month:</label>
+                                    <input type="month" name="startMonth" id="startMonth" min="2018-01" class="form-control w-auto">`;
+    }
+    
+    if (userChoice == 'all') {
+        updatedElement.innerHTML = ``;
+    }
+})
         
         

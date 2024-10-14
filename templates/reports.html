@@ -15,7 +15,7 @@
             {% endif %}
         </div>
 
-        <form action="reports" method="get">
+        <form action="reports" method="get" id="range_table">
             <div class="mb-3">
                 <select class="form-control w-auto" name="report_type" id="report_type">
                     <option value="" disabled selected >Select Range</option>
@@ -25,11 +25,8 @@
                 </select>   
             </div>
 
-            <div class="mb-3">
-                <label for="startMonth">From:</label>
-                <input type="month" name="startMonth" id="startMonth" min="2018-01" class="form-control w-auto">
-                <label for="endMonth">To:</label>
-                <input type="month" name="endMonth" id="endMonth" min="2018-01" class="form-control w-auto">
+            <div class="mb-3" id="range_options">
+
             </div>
             <div class="mb-3">
                 <button class="btn btn-primary" type="submit">Apply</button>
