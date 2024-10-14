@@ -154,6 +154,12 @@ def reports():
         user_data = db.execute("SELECT id, type, amount, description, category, transaction_date, source FROM transactions WHERE user_id = ? AND transaction_date\
                                 BETWEEN ? AND ?", session["user_id"], start_month, end_month)
 
+    elif request.args.get('startMonth') and not request.args.get('endMonth'):
+        start_month = request.args.get('startMonth') + "-01"
+        end_month = request.args.get('startMonth') + "-31"
+        user_data = db.execute("SELECT id, type, amount, description, category, transaction_date, source FROM transactions WHERE user_id = ? AND transaction_date\
+                                BETWEEN ? AND ?", session["user_id"], start_month, end_month)
+    
     else:
         user_data = db.execute("SELECT id, type, amount, description, category, transaction_date, source FROM transactions WHERE user_id = ?", session["user_id"])
 
