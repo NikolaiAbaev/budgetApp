@@ -45,9 +45,12 @@ def login_required(f):
     return decorated_function
 
 
-def usd(value):
+def usd(value, type=""):
     """Format value as USD."""
-    return f"${value:,.2f}"
+    if type == 'expense':
+        return f"-${value:,.2f}"
+    else:
+        return f"${value:,.2f}"
 
 
 def interest(value):

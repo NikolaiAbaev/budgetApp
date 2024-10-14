@@ -155,14 +155,14 @@ def reports():
                                 BETWEEN ? AND ?", session["user_id"], start_month, end_month)
         user_data.sort(key=lambda x: x['transaction_date'])
         for i in user_data:
-            i['amount'] = usd(i['amount'])
+            i['amount'] = usd(i['amount'], i['type'])
             i['transaction_date'] = date_format(i['transaction_date'])
 
     else:
         user_data = db.execute("SELECT id, type, amount, description, category, transaction_date, source FROM transactions WHERE user_id = ?", session["user_id"])
         user_data.sort(key=lambda x: x['transaction_date'])
         for i in user_data:
-            i['amount'] = usd(i['amount'])
+            i['amount'] = usd(i['amount'], i['type'])
             i['transaction_date'] = date_format(i['transaction_date'])
 
     """Allow User to Edit and Delete Entries on the Generated Table"""
