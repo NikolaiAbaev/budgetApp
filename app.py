@@ -299,10 +299,15 @@ def addnetworth():
 
 
 # TO DO: user account edit page
-
+@app.route("/profile")
+@login_required
+def profile():
+    name = session["username"]
+    return render_template("profile.html", name=name)
 
 # TO DO: Add a route to create a budget 
 @app.route("/budget")
 @login_required
 def budget():
+
     return render_template("budget.html")
