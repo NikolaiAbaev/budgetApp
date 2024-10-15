@@ -300,10 +300,8 @@ def addnetworth():
 # TO DO: user account edit page
 
 
-# TO DO: Add a route to generate monthly / yearly spending 
-
-
 # TO DO: Add a route to create a budget 
-
-
-# TO DO: nest the net worth by asset / debt type. 
+@app.route("/budget")
+@login_required
+def budget():
+    return render_template("budget.html")
