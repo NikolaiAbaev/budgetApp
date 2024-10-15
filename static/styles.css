@@ -71,3 +71,9 @@ button.delete-btn img.trash_img {
 form.edit-delete {
     display: inline;
 }
+
+
+tr.income td {
+    background-color: lightgreen !important;
+    
+}

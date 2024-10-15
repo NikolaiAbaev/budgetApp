@@ -63,6 +63,7 @@ selectedElelement.addEventListener("click", function(event) {
                         document.querySelector('#date_input').value = document.querySelector("#dateValue").value;
                         document.querySelector('#description_input').value = document.querySelector("#descriptionValue").value;
                         document.querySelector('#amount_input').value = document.querySelector("#amountValue").value;
+                        clickTracker = true;
                     })}
         
         if (event.target.textContent == 'Delete') {
@@ -77,7 +78,7 @@ selectedElelement.addEventListener("click", function(event) {
                     <form class="edit-delete" method="post" action="reports">
                         <input name="id" type="hidden" value="${event.target.value}">
                         <button class="btn btn-primary" type="submit">Delete</button>
-                    <form>`}
+                    <form>`};
         }})
 
 

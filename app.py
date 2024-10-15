@@ -181,8 +181,9 @@ def reports():
         else:
             try: 
                 enter_amount = float(enter_amount)
-                if enter_amount < 0.01:
-                    return render_template("reports.html", error="Please enter a valid amount.", user_data=user_data)
+                if enter_amount < 0:
+                    enter_amount = enter_amount * -1
+
             except ValueError:
                 return render_template("reports.html", error="Please enter a valid amount.", user_data=user_data)
             
