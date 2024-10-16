@@ -1,11 +1,19 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Reports
+    Budget 
 {% endblock %}
 
 {% block main %}
 
-<h1>This function is not yet available</h1>
+<h1>Budget Break Down by Months / Year</h1>
+
+<div>
+    <canvas class="col-1" id="myChart"></canvas>
+</div>
+  
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.5/dist/chart.umd.min.js"></script>
+  
+<script src="{{ url_for('static', filename='budget_script.js') }}"></script>
 
 {% endblock %}
