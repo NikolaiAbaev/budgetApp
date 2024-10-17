@@ -73,9 +73,12 @@
                 <tr>
                     <td>
                         <div class="chart-details">
+                                <div>
+                                    From <span class="chart_date">{{ user_data[0].transaction_date }}</span> to <span class="chart_date">{{ user_data[-1].transaction_date }}</span> you spent:
+                                </div>    
                                 <ul>
                                     {% for data in chart_description %}
-                                        <li>{{ data.category }}: <span class="amount">{{ data.amount }}</li>
+                                        <li>{{ data.category }}: <span class="chart_amount">{{ data.amount }}</span></li>
                                     {% endfor %}
                                 </ul>
                         </div>

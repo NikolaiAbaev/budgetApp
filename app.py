@@ -164,7 +164,7 @@ def reports():
         user_data = db.execute("SELECT id, type, amount, description, category, transaction_date, source FROM transactions WHERE user_id = ?", session["user_id"])
 
     pie_chart_data_dict = {
-        'money_left': 0,
+        'money_saved': 0,
 
     }
     
@@ -172,15 +172,15 @@ def reports():
 
     for i in user_data:
         if i['type'] == 'income':
-            pie_chart_data_dict['money_left'] = pie_chart_data_dict['money_left'] + i['amount']
+            pie_chart_data_dict['money_saved'] = pie_chart_data_dict['money_saved'] + i['amount']
         else:
             pie_chart_data_dict[i['category']] = pie_chart_data_dict.get(i['category'], 0) + i['amount']
-            pie_chart_data_dict['money_left'] = pie_chart_data_dict['money_left'] - i['amount']
+            pie_chart_data_dict['money_saved'] = pie_chart_data_dict['money_saved'] - i['amount']
 
     chart_labels, chart_data = [], []
     print(pie_chart_data_dict)
     for key, value in pie_chart_data_dict.items():
-        chart_labels.append(key)
+        chart_labels.append(category_format(key))
         chart_data.append(int(value))
         chart_description.append({'category': category_format(key), 'amount': usd(value)})
 

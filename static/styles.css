@@ -95,12 +95,17 @@ tr.income td {
 }
 
 
-div.chart-details {
+.chart-details ul {
     font-family: 'Rubik', sans-serif;
     display: inline;
-    align-items: center;
     gap: 24px;
-    background-color: red;
+    text-align: center;
+    list-style-type: none;
+}
+
+.chart_amount, .chart_date {
+    font-family: 'Rubik', sans-serif;
+    font-weight: bold;
 }
 
 
