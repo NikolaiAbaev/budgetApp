@@ -1,25 +1,38 @@
-
-
 const ctx = document.getElementById('myChart');
+const chartData = {
+  labels: ['Expense 1', 'Expense 2', 'Expense 3', 'Expense 4', 'Deez Nuts'],
+  data: [12, 19, 3, 5, 2, 3],
+  borderWidth: 1 
+  };
 
-
-new Chart(ctx, {
+new Chart(ctx, 
+  {
     type: 'doughnut',
-    data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Left'],
-      datasets: [{
-        label: '$ Value',
-        data: [12, 19, 3, 5, 2, 3],
-        borderWidth: 1 
-      }]
+    data: 
+    {
+      labels: chartData.labels,
+      datasets: 
+      [
+        {
+          label: '$ Value',
+          data: chartData.data,
+          borderWidth: chartData.borderWidth 
+        }
+      ]
     },
-    options: {
-        responsive: true,
-        maintainAspectRatio: true,  
-        scales: {
-            y: {
-                beginAtZero: true
-            }
+
+    options: 
+    {
+      borderWidth: 10,
+      borderRaidus: 6,
+      hoverBorderWidth: 0, 
+      plugins:
+      {
+        legend: 
+        {
+          display: false,
+        }
       }
     }
-  });
+  }
+  );

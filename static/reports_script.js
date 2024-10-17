@@ -90,17 +90,26 @@ rangeSelectedElement.addEventListener('click', function(event) {
                                     <label for="startMonth">From:</label>
                                     <input type="month" name="startMonth" id="startMonth" min="2018-01" class="form-control w-auto">
                                     <label for="endMonth">To:</label>
-                                    <input type="month" name="endMonth" id="endMonth" min="2018-01" class="form-control w-auto"></input>`;
+                                    <input type="month" name="endMonth" id="endMonth" min="2018-01" class="form-control w-auto"></input>
+                                    <div class="mb-3">
+                                        <button class="btn btn-primary reports-btn" type="submit">Apply</button>
+                                    </div>`
+                                    ;
     }
 
     if (userChoice == 'month') {
         updatedElement.innerHTML = `
                                     <label for="startMonth">Select a month:</label>
-                                    <input type="month" name="startMonth" id="startMonth" min="2018-01" class="form-control w-auto">`;
+                                    <input type="month" name="startMonth" id="startMonth" min="2018-01" class="form-control w-auto">
+                                    <div class="mb-3">
+                                        <button class="btn btn-primary reports-btn" type="submit">Apply</button>
+                                    </div>`;
     }
     
     if (userChoice == 'all') {
-        updatedElement.innerHTML = ``;
+        updatedElement.innerHTML = `<div class="mb-3">
+                                        <button class="btn btn-primary reports-btn" type="submit">Apply</button>
+                                    </div>`;
     }
 })
         

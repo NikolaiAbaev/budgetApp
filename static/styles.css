@@ -68,6 +68,12 @@ button.delete-btn img.trash_img {
 }
 
 
+.reports-btn {
+    margin-left: 0;
+    position: relative;
+}
+
+
 form.edit-delete {
     display: inline;
 }
@@ -77,3 +83,41 @@ tr.income td {
     background-color: lightgreen !important;
     
 }
+
+
+.chart-heading {
+    font-family: 'Rubik', sans-serif;
+    color: #023047;
+    text-transform:capitalize;
+    font-size: 24px;
+    text-align: center;
+    display: inline
+}
+
+
+div.chart-details {
+    font-family: 'Rubik', sans-serif;
+    display: inline;
+    align-items: center;
+    gap: 24px;
+    background-color: red;
+}
+
+
+.chart-container {
+    width: 400px;
+}
+
+
+.table_chart-container {
+    display: flex;
+    column-gap: 20px;
+}
+
+
+#range_options {
+    display: flex;
+    font-family: 'Rubik', sans-serif;
+}
+
+

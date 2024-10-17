@@ -6,12 +6,36 @@
 
 {% block main %}
 
-<h1>Budget Break Down by Months / Year</h1>
-
-<div>
-    <canvas class="col-1" id="myChart"></canvas>
-</div>
-  
+<table class="chart-table">
+    <thead>
+        <tr>
+            <th class="chart-heading">
+                Budget Break Down
+            </th>
+        </tr>
+    </thead>
+    <tbody class="budget-breakdown">
+        <tr>
+            <td>
+                <div class="chart-container">
+                    <canvas  id="myChart"></canvas>
+                </div>
+            </td> 
+        </tr>
+        <tr>
+            <td>
+                <div class="chart-details">
+                        <ul>
+                            <li>Expense 1: <span class="amount">$100.00</span></li>
+                            <li>Expense 2: <span class="amount">$100.00</span></li>
+                            <li>Exoense 3: <span class="amount">$100.00</span></li>
+                            <li>Expense 4: <span class="amount">$100.00</span></li>
+                        </ul>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.5/dist/chart.umd.min.js"></script>
   
 <script src="{{ url_for('static', filename='budget_script.js') }}"></script>

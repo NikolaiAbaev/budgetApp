@@ -64,3 +64,20 @@ def date_format(str):
     1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June", 7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December"}
     split = str.split("-")
     return f"{MONTHS[int(split[1])]} {int(split[2])}, {split[0]}"
+
+
+def category_format(str):
+    """Format the str into the more user friendly format"""
+    answer = ""
+    for i in range(0, len(str)):
+        if i == 0:
+            answer += str[i].upper()
+        else:
+            if str[i - 1] == '_':
+                answer += str[i].upper()
+            else:
+                if str[i] == '_':
+                    answer += ' '
+                else:
+                    answer += str[i]
+    return answer

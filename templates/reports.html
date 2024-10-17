@@ -5,8 +5,8 @@
 {% endblock %}
 
 {% block main %}
+<tbody> 
 
-    <div class="container text-start">
         <h2>Spending Overview</h2>
         
         <div id="alert_block">
@@ -28,12 +28,11 @@
             <div class="mb-3" id="range_options">
 
             </div>
-            <div class="mb-3">
-                <button class="btn btn-primary" type="submit">Apply</button>
-            </div>
+
         </form>
 
-        <table class="table table-hover table-striped" id="transactions_table">
+    <div class="table_chart-container">
+        <table class="table table-hover table-striped income_expense-table" id="transactions_table">
             <thead>
                 <tr class="list-heading">
                     <th scope="row">Date</th>
@@ -52,17 +51,86 @@
                         <button class="btn btn-primary delete-btn" type="submit" value="{{ data.id }}" id="delete-{{ data.id }}">Delete</button>
                     </td>
                 </tr>
-
                 {% endfor %}
-            <tbody> 
-            
+        </table>
+
+        <table class="chart-table">
+            <thead>
+                <tr>
+                    <th class="chart-heading">
+                        Budget Break Down
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="budget-breakdown">
+                <tr>
+                    <td>
+                        <div class="chart-container">
+                            <canvas  id="myChart"></canvas>
+                        </div>
+                    </td> 
+                </tr>
+                <tr>
+                    <td>
+                        <div class="chart-details">
+                                <ul>
+                                    {% for data in chart_description %}
+                                        <li>{{ data.category }}: <span class="amount">{{ data.amount }}</li>
+                                    {% endfor %}
+                                </ul>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
+    </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.5/dist/chart.umd.min.js"></script>
+        <script>
+            const ctx = document.getElementById('myChart');
+            const chartData = {
+            labels: {{ chart_labels | tojson }},
+            data: {{ chart_data | tojson }},
+            borderWidth: 1 
+            };
+
+            new Chart(ctx, 
+            {
+                type: 'doughnut',
+                data: 
+                {
+                labels: chartData.labels,
+                datasets: 
+                [
+                    {
+                    label: '$',
+                    data: chartData.data,
+                    borderWidth: chartData.borderWidth 
+                    }
+                ]
+                },
+
+                options: 
+                {
+                borderWidth: 10,
+                borderRaidus: 6,
+                hoverBorderWidth: 0, 
+                plugins:
+                {
+                    legend: 
+                    {
+                    display: false,
+                    }
+                }
+                }
+            }
+            );
+        </script>
 
         <form action="/transactions" method="get">            
             <button class="btn btn-primary" type="submit" id="the_transaction_submit">Add Transactions</button>
         </form>
 
     <script src="{{ url_for('static', filename='reports_script.js') }}"></script>
-
+</tbody>
 {% endblock %}

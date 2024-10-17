@@ -7,7 +7,7 @@ from flask_session import Session
 
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import apology, login_required, usd, interest, date_format
+from helpers import apology, login_required, usd, interest, date_format, category_format
 
 # Configure application
 app = Flask(__name__)
@@ -163,6 +163,28 @@ def reports():
     else:
         user_data = db.execute("SELECT id, type, amount, description, category, transaction_date, source FROM transactions WHERE user_id = ?", session["user_id"])
 
+    pie_chart_data_dict = {
+        'money_left': 0,
+
+    }
+    
+    chart_description = []
+
+    for i in user_data:
+        if i['type'] == 'income':
+            pie_chart_data_dict['money_left'] = pie_chart_data_dict['money_left'] + i['amount']
+        else:
+            pie_chart_data_dict[i['category']] = pie_chart_data_dict.get(i['category'], 0) + i['amount']
+            pie_chart_data_dict['money_left'] = pie_chart_data_dict['money_left'] - i['amount']
+
+    chart_labels, chart_data = [], []
+    print(pie_chart_data_dict)
+    for key, value in pie_chart_data_dict.items():
+        chart_labels.append(key)
+        chart_data.append(int(value))
+        chart_description.append({'category': category_format(key), 'amount': usd(value)})
+
+    print(chart_description)
     user_data.sort(key=lambda x: x['transaction_date'])
     for i in user_data:
         i['amount'] = usd(i['amount'], i['type'])
@@ -201,7 +223,7 @@ def reports():
         return redirect("reports")
     
     """Render Monthly and Yearly statistics here"""
-    return render_template("reports.html", user_data=user_data)
+    return render_template("reports.html", user_data=user_data, chart_description=chart_description, chart_labels=chart_labels, chart_data=chart_data)
 
 
 @app.route("/transactions", methods=["POST", "GET"])
