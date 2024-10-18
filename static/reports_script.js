@@ -34,7 +34,6 @@ selectedElelement.addEventListener("click", function(event) {
         const currentDescription = description_row.textContent;
         const currentAmount = parseFloat(amount_row.textContent.replace("$", "").replace(",", ""));
 
-
         if (event.target.textContent == 'Edit') {
 
             date_row.innerHTML = `<input id="dateValue" type="date" placeholder="${currentDate}" value="${currentDate}">`

@@ -43,9 +43,9 @@
             </thead>
                 {% for data in user_data %}
                 <tr class="{{ data.type }}" id="row-{{ data.id }}">
-                    <td class="row-date">{{ data.transaction_date }}</td>
+                    <td class="row-date">{{ data.transaction_date | date_format }}</td>
                     <td class="row-description">{{ data.description }}</td>
-                    <td class="row-amount">{{ data.amount }}</td>
+                    <td class="row-amount">{% if data.type == 'expense' %}-{% endif %}{{ data.amount | usd}}</td>
                     <td class="row-buttons">       
                         <button class="btn btn-primary edit-btn" type="submit" value="{{ data.id }}" id="edit-{{ data.id }}">Edit</button>
                         <button class="btn btn-primary delete-btn" type="submit" value="{{ data.id }}" id="delete-{{ data.id }}">Delete</button>

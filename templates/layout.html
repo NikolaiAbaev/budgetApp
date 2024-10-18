@@ -30,16 +30,16 @@
 
         <nav class="bg-light border navbar navbar-expand-md navbar-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="/"><span class="blue">Budget</span><span class="red">ME</span></a>
+                <a class="navbar-brand" href="/reports"><span class="blue">Budget</span><span class="red">ME</span></a>
                 <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-bs-target="#navbar" data-bs-toggle="collapse" type="button">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbar">
                     {% if session["user_id"] %}
                         <ul class="navbar-nav me-auto mt-2">
-                            <li class="nav-item"><a class="nav-link" href="/reports">Overview</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/editreports">Edit Transactions</a></li>
                             <li class="nav-item"><a class="nav-link" href="/">Net Worth</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/budget">Budget</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/budget">Budget and Planning</a></li>
                         </ul>
                         <ul class="navbar-nav ms-auto mt-2">
                             <li class="nav-item"><a class="nav-link" href="/profile">Profile</a></li>

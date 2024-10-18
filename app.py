@@ -14,6 +14,9 @@ app = Flask(__name__)
 
 # Custom filter
 app.jinja_env.filters["usd"] = usd
+app.jinja_env.filters["interest"] = interest
+app.jinja_env.filters["date_format"] = date_format
+app.jinja_env.filters["category_format"] = category_format
 
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_PERMANENT"] = False
@@ -99,7 +102,7 @@ def login():
         session["username"] = rows[0]["username"]
 
         # Redirect user to home page
-        return redirect("/")
+        return redirect("reports")
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
@@ -134,7 +137,7 @@ def register():
         try:
             db.execute("INSERT INTO users (userName, hash, email) VALUES(?, ?, ?)", userName, hashed_password, email)
             print("ERROR")
-            return redirect("/")
+            return redirect("reports")
 
         except ValueError:
             return apology("username already exists", 400)
@@ -183,12 +186,9 @@ def reports():
         chart_description.append({'category': category_format(key), 'amount': usd(value)})
 
     user_data.sort(key=lambda x: x['transaction_date'])
-    for i in user_data:
-        i['amount'] = usd(i['amount'], i['type'])
-        i['transaction_date'] = date_format(i['transaction_date'])
     
     """Render Monthly and Yearly statistics here"""
-    return render_template("reports.html", user_data=user_data, chart_description=chart_description, chart_labels=chart_labels, chart_data=chart_data)
+    return render_template("reports.html", user_data=user_data, chart_description=chart_description, chart_labels=chart_labels, chart_data=chart_data, name=session["username"])
 
 
 @app.route("/editreports", methods=["GET", "POST",])
@@ -212,9 +212,6 @@ def editreports():
         user_data = db.execute("SELECT id, type, amount, description, category, transaction_date, source FROM transactions WHERE user_id = ?", session["user_id"])
 
     user_data.sort(key=lambda x: x['transaction_date'])
-    for i in user_data:
-        i['amount'] = usd(i['amount'], i['type'])
-        i['transaction_date'] = date_format(i['transaction_date'])
 
     """Allow User to Edit and Delete Entries on the Generated Table"""
     if request.method == "POST":
