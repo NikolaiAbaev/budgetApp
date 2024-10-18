@@ -126,3 +126,8 @@ tr.income td {
 }
 
 
+div.button-container {
+    display: flex;
+    gap: 10px;
+}
+

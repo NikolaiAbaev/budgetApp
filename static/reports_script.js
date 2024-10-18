@@ -48,10 +48,10 @@ selectedElelement.addEventListener("click", function(event) {
        
             //new button and hidden form --> it will take the entered values. 
             button_row.innerHTML = `
-                    <form class="edit-delete" method ="get" action="reports">
+                    <form class="edit-delete" method ="get" action="editreports">
                         <button class="btn btn-primary" type="submit">Cancel</button>
                     </form>
-                    <form class="edit-delete" method="post" action="reports">
+                    <form class="edit-delete" method="post" action="editreports">
                         <input id="id_input" name="id" type="hidden" value="${event.target.value}">
                         <input id="date_input" name="date" type="hidden" value="${enter_date}">
                         <input id="description_input" name="description" type="hidden" value="${enter_description}">
@@ -72,10 +72,10 @@ selectedElelement.addEventListener("click", function(event) {
             alert_block.innerHTML = '<div id="alert_block" class="alert alert-danger">Are you sure you want to delete this transaction?</div>'
 
             button_row.innerHTML = `
-                    <form class="edit-delete" method ="get" action="reports">
+                    <form class="edit-delete" method ="get" action="editreports">
                         <button class="btn btn-primary" type="submit">Cancel</button>
                     </form>
-                    <form class="edit-delete" method="post" action="reports">
+                    <form class="edit-delete" method="post" action="editreports">
                         <input name="id" type="hidden" value="${event.target.value}">
                         <button class="btn btn-primary" type="submit">Delete</button>
                     <form>`};

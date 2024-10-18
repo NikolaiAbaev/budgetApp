@@ -38,7 +38,6 @@
                     <th scope="row">Date</th>
                     <th scope="row">Description</th>
                     <th scope="row">Amount</th>
-                    <th></th>
                 </tr>
             </thead>
                 {% for data in user_data %}
@@ -46,10 +45,6 @@
                     <td class="row-date">{{ data.transaction_date }}</td>
                     <td class="row-description">{{ data.description }}</td>
                     <td class="row-amount">{{ data.amount }}</td>
-                    <td class="row-buttons">       
-                        <button class="btn btn-primary edit-btn" type="submit" value="{{ data.id }}" id="edit-{{ data.id }}">Edit</button>
-                        <button class="btn btn-primary delete-btn" type="submit" value="{{ data.id }}" id="delete-{{ data.id }}">Delete</button>
-                    </td>
                 </tr>
                 {% endfor %}
         </table>
@@ -74,7 +69,13 @@
                     <td>
                         <div class="chart-details">
                                 <div>
-                                    From <span class="chart_date">{{ user_data[0].transaction_date }}</span> to <span class="chart_date">{{ user_data[-1].transaction_date }}</span> you spent:
+                                    {% if user_data %}
+                                    From 
+                                        <span class="chart_date">{{ user_data[0].transaction_date }}</span> to 
+                                        <span class="chart_date">{{ user_data[-1].transaction_date }}</span> you spent:
+                                    {% else %}
+                                    Please enter transactions to render data.
+                                    {% endif %}
                                 </div>    
                                 <ul>
                                     {% for data in chart_description %}
@@ -129,11 +130,14 @@
             }
             );
         </script>
-
-        <form action="/transactions" method="get">            
-            <button class="btn btn-primary" type="submit" id="the_transaction_submit">Add Transactions</button>
-        </form>
-
+        <div class="button-container">
+            <form action="/transactions" method="get">            
+                <button class="btn btn-primary" type="submit" id="the_transaction_submit">Add Transactions</button>
+            </form>
+            <form action="/editreports" method="get">            
+                <button class="btn btn-primary" type="submit" id="the_edit_submit">Edit Transactions</button>
+            </form>
+        </div>
     <script src="{{ url_for('static', filename='reports_script.js') }}"></script>
 </tbody>
 {% endblock %}

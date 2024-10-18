@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Reports
+{% endblock %}
+
+{% block main %}
+<tbody> 
+
+        <h2>Spending Overview</h2>
+        
+        <div id="alert_block">
+            {% if error %}
+            <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
+        </div>
+
+        <form action="editreports" method="get" id="range_table">
+            <div class="mb-3">
+                <select class="form-control w-auto" name="report_type" id="report_type">
+                    <option value="" disabled selected >Select Range</option>
+                    <option value="all">All</option>
+                    <option value="month">Month</option>
+                    <option value="range">Range</option>
+                </select>   
+            </div>
+
+            <div class="mb-3" id="range_options">
+
+            </div>
+
+        </form>
+
+    <div class="table_chart-container">
+        <table class="table table-hover table-striped income_expense-table" id="transactions_table">
+            <thead>
+                <tr class="list-heading">
+                    <th scope="row">Date</th>
+                    <th scope="row">Description</th>
+                    <th scope="row">Amount</th>
+                    <th>Edit / Delete</th>
+                </tr>
+            </thead>
+                {% for data in user_data %}
+                <tr class="{{ data.type }}" id="row-{{ data.id }}">
+                    <td class="row-date">{{ data.transaction_date }}</td>
+                    <td class="row-description">{{ data.description }}</td>
+                    <td class="row-amount">{{ data.amount }}</td>
+                    <td class="row-buttons">       
+                        <button class="btn btn-primary edit-btn" type="submit" value="{{ data.id }}" id="edit-{{ data.id }}">Edit</button>
+                        <button class="btn btn-primary delete-btn" type="submit" value="{{ data.id }}" id="delete-{{ data.id }}">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+        </table>
+    </div>
+
+        <div class="button-container">
+            <form action="/transactions" method="get">            
+                <button class="btn btn-primary" type="submit" id="the_transaction_submit">Add Transactions</button>
+            </form>
+
+            <form action="/reports" method="get">            
+                <button class="btn btn-primary" type="submit" id="the_view_submit">View Transactions</button>
+            </form>
+        </div>
+    <script src="{{ url_for('static', filename='reports_script.js') }}"></script>
+</tbody>
+{% endblock %}

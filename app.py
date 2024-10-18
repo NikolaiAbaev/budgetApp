@@ -143,7 +143,7 @@ def register():
     return render_template("register.html")
 
 
-@app.route("/reports", methods=["GET", "POST"])
+@app.route("/reports", methods=["GET"])
 @login_required
 def reports():
 
@@ -165,7 +165,6 @@ def reports():
 
     pie_chart_data_dict = {
         'money_saved': 0,
-
     }
     
     chart_description = []
@@ -178,13 +177,40 @@ def reports():
             pie_chart_data_dict['money_saved'] = pie_chart_data_dict['money_saved'] - i['amount']
 
     chart_labels, chart_data = [], []
-    print(pie_chart_data_dict)
     for key, value in pie_chart_data_dict.items():
         chart_labels.append(category_format(key))
         chart_data.append(int(value))
         chart_description.append({'category': category_format(key), 'amount': usd(value)})
 
-    print(chart_description)
+    user_data.sort(key=lambda x: x['transaction_date'])
+    for i in user_data:
+        i['amount'] = usd(i['amount'], i['type'])
+        i['transaction_date'] = date_format(i['transaction_date'])
+    
+    """Render Monthly and Yearly statistics here"""
+    return render_template("reports.html", user_data=user_data, chart_description=chart_description, chart_labels=chart_labels, chart_data=chart_data)
+
+
+@app.route("/editreports", methods=["GET", "POST",])
+@login_required
+def editreports():
+        
+    """Render Monthly and Yearly statistics here"""
+    if request.args.get('startMonth') and request.args.get('endMonth'):
+        start_month = request.args.get('startMonth') + "-01"
+        end_month = request.args.get('endMonth') + "-31"
+        user_data = db.execute("SELECT id, type, amount, description, category, transaction_date, source FROM transactions WHERE user_id = ? AND transaction_date\
+                                BETWEEN ? AND ?", session["user_id"], start_month, end_month)
+
+    elif request.args.get('startMonth') and not request.args.get('endMonth'):
+        start_month = request.args.get('startMonth') + "-01"
+        end_month = request.args.get('startMonth') + "-31"
+        user_data = db.execute("SELECT id, type, amount, description, category, transaction_date, source FROM transactions WHERE user_id = ? AND transaction_date\
+                                BETWEEN ? AND ?", session["user_id"], start_month, end_month)
+    
+    else:
+        user_data = db.execute("SELECT id, type, amount, description, category, transaction_date, source FROM transactions WHERE user_id = ?", session["user_id"])
+
     user_data.sort(key=lambda x: x['transaction_date'])
     for i in user_data:
         i['amount'] = usd(i['amount'], i['type'])
@@ -207,23 +233,22 @@ def reports():
                     enter_amount = enter_amount * -1
 
             except ValueError:
-                return render_template("reports.html", error="Please enter a valid amount.", user_data=user_data)
+                return render_template("editreports.html", error="Please enter a valid amount.", user_data=user_data)
             
             today = date.today()
+            
             try:
                 enter_date = datetime.strptime(enter_date, "%Y-%m-%d").date()
                 if enter_date > today:
-                    return render_template("reprots.html", error="Please enter a valid date.", user_data=user_data)
+                    return render_template("editreports.html", error="Please enter a valid date.", user_data=user_data)
             except ValueError:
-                return render_template("reports.html", error="Please enter a date in a valid format.", user_data=user_data)
+                return render_template("editreports.html", error="Please enter a date in a valid format.", user_data=user_data)
             
-            db.execute("UPDATE transactions SET description = ?, amount = ?, transaction_date = ? WHERE id=?", enter_description, enter_amount, enter_date, user_submit) 
-            print("we are here")
-            
-        return redirect("reports")
+            db.execute("UPDATE transactions SET description = ?, amount = ?, transaction_date = ? WHERE id=?", enter_description, enter_amount, enter_date, user_submit)       
+        return redirect("editreports")
     
     """Render Monthly and Yearly statistics here"""
-    return render_template("reports.html", user_data=user_data, chart_description=chart_description, chart_labels=chart_labels, chart_data=chart_data)
+    return render_template("editreports.html", user_data=user_data)
 
 
 @app.route("/transactions", methods=["POST", "GET"])
