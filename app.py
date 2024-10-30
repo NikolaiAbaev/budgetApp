@@ -12,7 +12,7 @@ from helpers import apology, login_required, usd, interest, date_format, categor
 # Configure application
 app = Flask(__name__)
 
-# Custom filter
+# Custom filters
 app.jinja_env.filters["usd"] = usd
 app.jinja_env.filters["interest"] = interest
 app.jinja_env.filters["date_format"] = date_format
