@@ -267,7 +267,6 @@ def income():
             transaction_date = request.form.get("date")
             description = request.form.get("description")
             amount = request.form.get("amount")
-
             try: 
                 amount = float(amount)
 

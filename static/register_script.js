@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         
         // Make Sure Password is at least 8 characters
-        if (passwordInput.value < 7) {
+        if (passwordInput.value.length < 7) {
             event.preventDefault();  // Prevent form submission
             errorMessageDiv.innerHTML += `<div class="alert alert-danger">Password Must be At least 8 Characters Long</div>`;
             return;
