@@ -126,21 +126,25 @@ def register():
     if request.method == "POST":
         if request.form.get("password") != request.form.get("confirmation"):
             return apology("Passowrds did not match", 400)
+        if len(request.form.get("password")) < 7:
+            return apology("Passwords must be at least 8 chars long", 400)
 
         userName = request.form.get("username")
         email = request.form.get("email")
         hashed_password = generate_password_hash(request.form.get("password"))
+
+        if len(userName) < 7:
+            return apology("Username must be at least 8 chars long", 400)
 
         if not userName or not request.form.get("password"):
             return apology("Must provide username and password", 400)
 
         try:
             db.execute("INSERT INTO users (userName, hash, email) VALUES(?, ?, ?)", userName, hashed_password, email)
-            print("ERROR")
             return redirect("reports")
 
         except ValueError:
-            return apology("username already exists", 400)
+            return apology("username or email already exists", 400)
 
 
     return render_template("register.html")

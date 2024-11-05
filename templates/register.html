@@ -9,9 +9,13 @@
 
         <h2>Register</h2>
         <p>Take the steps to control your finances.</p>
+
+        <div id="error-message">
+        </div>
+
         <form action="/register" method="post">
             <div class="mb-3">
-                <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="username" placeholder="Username" type="text">
+                <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="username" placeholder="Username" type="text" required>
             </div>
             <div class="mb-3">
                 <input class="form-control mx-auto w-auto" name="email" placeholder="Email" type="email">
@@ -25,4 +29,5 @@
             <button class="btn btn-primary" type="submit">Register</button>
         </form>
 
+        <script src="{{ url_for('static', filename='register_script.js') }}"></script>
 {% endblock %}
